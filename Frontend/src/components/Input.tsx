@@ -4,7 +4,7 @@ interface InputProps {
   type: string;
 }
 
-export function Input({ placeholder, reference,type}: InputProps) {
+export function Input({ placeholder, reference, type}: InputProps) {
     return (
       <div>
         <input

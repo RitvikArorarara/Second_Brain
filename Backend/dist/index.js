@@ -122,6 +122,17 @@ app.delete("/api/v1/content", middleware_1.userMiddleware, (req, res) => __await
         message: "Content deleted",
     });
 }));
+app.delete("/api/v1/content/:id", middleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const contentId = req.params.id;
+    yield db_1.ContentModel.deleteOne({
+        _id: contentId,
+        //@ts-ignore
+        userId: req.userId,
+    });
+    res.json({
+        message: "Content deleted",
+    });
+}));
 app.post("/api/v1/brain/share", middleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const share = req.body.share;
     if (share) {

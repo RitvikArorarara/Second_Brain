@@ -29,7 +29,7 @@ export function Sidebar({onFilterChange}: {onFilterChange: (filter: string) => v
       <div className="pt-4 pl-4">
         <SideBarItem
           text="All"
-          icon={<ListIcon />}
+          icon={<ListIcon/>}
           selected={selectedFilter === "All"}
           onClick={() => handleFilterClick("All")}
         />

@@ -17,11 +17,13 @@ interface CreateContentModalProps {
 export function CreateContentModal({ open, onClose }: CreateContentModalProps) {
   const titleRef = useRef<HTMLInputElement>();
   const linkRef = useRef<HTMLInputElement>();
+
   const [type, setType] = useState(ContentType.Youtube);
 
   async function addContent() {
     const title = titleRef.current?.value;
     const link = linkRef.current?.value;
+
 
     await axios.post(
       `${BACKEND_URL}/api/v1/content`,
@@ -29,6 +31,7 @@ export function CreateContentModal({ open, onClose }: CreateContentModalProps) {
         title,
         link,
         type,
+
       },
       {
         headers: {
@@ -52,12 +55,12 @@ export function CreateContentModal({ open, onClose }: CreateContentModalProps) {
                 </div>
               </div>
               <div>
-                <Input reference={titleRef} placeholder={"Title"}></Input>
+                <Input reference={titleRef} placeholder={"Title"} type="text"></Input>
               </div>
               <div>
-                <Input reference={linkRef} placeholder={"Link"}></Input>
+                <Input reference={linkRef} placeholder={"Link"} type="text"></Input>
               </div>
-
+         
               <h1>Type</h1>
               <div className="flex justify-center gap-1 p-4">
                 <Button
