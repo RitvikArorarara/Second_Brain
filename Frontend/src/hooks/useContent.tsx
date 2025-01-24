@@ -1,96 +1,59 @@
-// import { useState, useEffect } from "react"
-// import axios from "axios"
-// import { BACKEND_URL } from "../config"
-
-// export function useContent() {
-//   const [contents, setContents] = useState([])
-//   const [error, setError] = useState<string | null>(null)
-
-//   function refresh() {
-//     axios
-//       .get(`${BACKEND_URL}/api/v1/content`, {
-//         headers: {
-//           Authorization: localStorage.getItem("token"),
-//         },
-//       })
-//       .then((response) => {
-//         setContents(response.data)
-//         setError(null)
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching contents", error)
-//         setError(error.response.data.message)
-//       })
-//   }
-
-
-
-//   useEffect(() => {
-//     refresh()
-
-//     const interval = setInterval(() => {
-//       refresh()
-//     }, 10 * 1000)
-
-//     return () => {
-//       clearInterval(interval)
-//     }
-//   }, [])
-
-//   return { contents, refresh, error }
-// }
-  
-import { useState, useEffect } from "react"
-import axios from "axios"
-import { BACKEND_URL } from "../config"
+import { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 export function useContent() {
-  const [contents, setContents] = useState([])
-  const [error, setError] = useState<string | null>(null)
+  const [contents, setContents] = useState([]);
+  const [error, setError] = useState<string | null>(null);
 
-  function refresh() {
-    axios
+  async function refresh() {
+    await axios
       .get(`${BACKEND_URL}/api/v1/content`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       })
       .then((response) => {
-        setContents(response.data)
-        setError(null)
+        setContents(response.data);
+        setError(null);
       })
       .catch((error) => {
-        console.error("Error fetching contents", error)
-        setError(error.response.data.message)
-      })
+        console.error("Error fetching contents", error);
+        setError(error.response.data.message);
+      });
   }
 
   async function deleteContent(contentId: string) {
-    try {
-      await axios.delete(`${BACKEND_URL}/api/v1/content/${contentId}`, {
+    await axios
+      .delete(`${BACKEND_URL}/api/v1/content/${contentId}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       })
-      refresh() // Refresh the content list after successful deletion
-    } catch (error) {
-      console.error("Error deleting content", error)
-      setError("Failed to delete content")
-    }
+      .then(() => {
+        console.log("Content deleted successfully");
+        refresh();
+      })
+      .catch((error) => {
+        console.error("Error deleting content", error);
+        setError(
+          error.response?.data?.message ||
+            "An error occurred while deleting the content"
+        );
+      });
   }
 
   useEffect(() => {
-    refresh()
+    refresh();
 
     const interval = setInterval(() => {
-      refresh()
-    }, 10 * 1000)
+      refresh();
+    }, 10 * 1000);
 
     return () => {
-      clearInterval(interval)
-    }
-  }, [])
+      clearInterval(interval);
+    };
+  }, []);
 
-  return { contents, refresh, error, deleteContent }
+  return { contents, refresh, error, deleteContent };
 }
-

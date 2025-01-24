@@ -7,6 +7,10 @@ import { random } from "./utils";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import  {config}  from "./config";
+import dotenv from "dotenv";
+
+
+dotenv.config();
 
 
 const app = express();
@@ -83,12 +87,14 @@ app.post("/api/v1/content", userMiddleware, async (req, res) => {
   const type = req.body.type;
   const title = req.body.title;
   await ContentModel.create({
+    
     link,
     type,
     title,
     //@ts-ignore
     userId: req.userId,
     tags: [],
+  
   });
   res.json({
     message: "Content created",
@@ -113,10 +119,8 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
 });
 
 app.delete("/api/v1/content", userMiddleware, async (req, res) => {
-  const contentId = req.body.contentId;
 
   await ContentModel.deleteMany({
-    contentId,
     //@ts-ignore
     userId: req.userId,
   });
@@ -126,16 +130,23 @@ app.delete("/api/v1/content", userMiddleware, async (req, res) => {
 });
 
 app.delete("/api/v1/content/:id", userMiddleware, async (req, res) => {
-  const contentId = req.params.id;
-  await ContentModel.deleteOne({
-    _id: contentId,
-    //@ts-ignore
-    userId: req.userId,
-  });
-  res.json({
-    message: "Content deleted",
-  });
+  try{
+    const contentId = req.params.id
+    await ContentModel.deleteOne({
+      _id: contentId,
+      //@ts-ignore
+      userId: req.userId,
+    });
+    res.json({
+      message: "Content deleted",
+    });
+  } catch (e) {
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
 });
+
 
 app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
   const share = req.body.share;

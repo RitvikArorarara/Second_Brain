@@ -3,33 +3,22 @@ import { CrossIcon } from "../icons/CrossIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
-import axios from "axios";
-import { BACKEND_URL } from "../config";
-import { useContent } from "../hooks/useContent";
+
 
 
 interface CardProps {
   title: string;
   link: string;
   type: "twitter" | "youtube";
-  contentId: string;
+  onDelete: () => void;
 }
 
-export function Card({ title, link, type }: CardProps) {
-  const { deleteContent } = useContent();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export function Card({ title, link, type, onDelete }: CardProps) {
 
-  const handleDelete = async () => {
-    await axios.delete(`${BACKEND_URL}/api/v1/content/${contentId}`, {
-      data: {
-        contentId,
-      },
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    });
-  };
+  const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,7 +30,7 @@ export function Card({ title, link, type }: CardProps) {
 
   return (
     <div className="mt-4">
-      <div className="p-4 bg-white rounded-md border-gray-200 max-w-72 border min-h-48 min-w-72">
+      <div className="p-4 bg-white rounded-md border-gray-200 max-w-72 border min-h-48 min-w-72 ">
         <div className="flex justify-between">
           <div className="flex items-center text-md">
             <div className="text-gray-500 pr-2">
@@ -58,7 +47,7 @@ export function Card({ title, link, type }: CardProps) {
               </a>
             </div>
 
-            <div className="text-gray-500 hover:cursor-pointer" onClick={() => handleDelete()}>
+            <div onClick={onDelete} className="text-gray-500 hover:cursor-pointer" >
               <CrossIcon />
             </div>
           </div>

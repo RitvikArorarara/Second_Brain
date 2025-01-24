@@ -31,7 +31,6 @@ export function CreateContentModal({ open, onClose }: CreateContentModalProps) {
         title,
         link,
         type,
-
       },
       {
         headers: {
@@ -46,7 +45,7 @@ export function CreateContentModal({ open, onClose }: CreateContentModalProps) {
   return (
     <>
       {open && (
-        <div className="w-screen h-screen bg-slate-500 bg-opacity-60 fixed top-0 left-0 flex justify-center">
+        <div className="w-screen h-screen bg-slate-500 fixed top-0 left-0 bg-opacity-60 flex justify-center">
           <div className="flex flex-col justify-center ">
             <span className="bg-white opacity-100 p-4 rounded">
               <div className="flex justify-end">

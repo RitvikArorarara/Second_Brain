@@ -21,6 +21,8 @@ const utils_1 = require("./utils");
 const cors_1 = __importDefault(require("cors"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = require("./config");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
@@ -112,9 +114,7 @@ app.get("/api/v1/content", middleware_1.userMiddleware, (req, res) => __awaiter(
     }
 }));
 app.delete("/api/v1/content", middleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const contentId = req.body.contentId;
     yield db_1.ContentModel.deleteMany({
-        contentId,
         //@ts-ignore
         userId: req.userId,
     });
@@ -123,15 +123,22 @@ app.delete("/api/v1/content", middleware_1.userMiddleware, (req, res) => __await
     });
 }));
 app.delete("/api/v1/content/:id", middleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const contentId = req.params.id;
-    yield db_1.ContentModel.deleteOne({
-        _id: contentId,
-        //@ts-ignore
-        userId: req.userId,
-    });
-    res.json({
-        message: "Content deleted",
-    });
+    try {
+        const contentId = req.params.id;
+        yield db_1.ContentModel.deleteOne({
+            _id: contentId,
+            //@ts-ignore
+            userId: req.userId,
+        });
+        res.json({
+            message: "Content deleted",
+        });
+    }
+    catch (e) {
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
 }));
 app.post("/api/v1/brain/share", middleware_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const share = req.body.share;
