@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { CrossIcon } from "../icons/CrossIcon";
-import { ShareIcon } from "../icons/ShareIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
+
 
 
 
@@ -17,12 +17,14 @@ export function Card({ title, link, type, onDelete }: CardProps) {
 
   const [loading, setLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
+ 
 
 
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
+      loading
     }, 2000);
 
     return () => clearTimeout(timer);
@@ -39,13 +41,9 @@ export function Card({ title, link, type, onDelete }: CardProps) {
             </div>
             {title}
           </div>
-
+    
           <div className="flex items-center">
-            <div className="pr-2 text-gray-500">
-              <a href={link} target="_blank">
-                <ShareIcon />
-              </a>
-            </div>
+           
 
             <div onClick={onDelete} className="text-gray-500 hover:cursor-pointer" >
               <CrossIcon />
@@ -54,7 +52,7 @@ export function Card({ title, link, type, onDelete }: CardProps) {
         </div>
 
         <div className="pt-4">
-          {type === "youtube" && (
+          { type === "youtube" && (
             <iframe
               className="w-full"
               src={link.replace("watch", "embed").replace("?v=", "/")}
@@ -66,7 +64,7 @@ export function Card({ title, link, type, onDelete }: CardProps) {
             ></iframe>
           )}
 
-          {type === "twitter" && (
+          { type === "twitter" && (
             <blockquote className="twitter-tweet">
               <a href={link.replace("x.com", "twitter.com")}></a>
             </blockquote>
