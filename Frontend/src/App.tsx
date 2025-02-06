@@ -10,10 +10,15 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Homescreen />} />
+          if(localStorage.getItem("token")){
+            <Route path="/dashboard" element={<Dashboard />} />
+          }else{
+            <Route path="/" element={<Homescreen />} />
+          }
+         
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          
         </Routes>
       </BrowserRouter>
     </>
