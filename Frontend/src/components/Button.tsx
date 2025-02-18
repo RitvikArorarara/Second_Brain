@@ -7,6 +7,7 @@ interface ButtonProps {
   onClick?: () => void;
   fullWidth?: boolean;
   loading?: boolean;
+
 }
 
 const variantClasses = {
@@ -35,8 +36,10 @@ export function Button({
           `${fullWidth ? " w-full flex justify-center items-center " : ""}${
             loading ? "opacity-45" : ""
           }`
+          
         }
         disabled={loading}
+      
       >
         <div className="pr-2">{startIcon}</div> {text}{" "}
       </button>
